@@ -1,11 +1,12 @@
 from flask import Flask, request
 import requests
 import json
+import os
 
 app = Flask(__name__)
 
-BOT_TOKEN = "حط_توكن_البوت"
-CHAT_ID = "حط_ايدي_التليجرام"
+BOT_TOKEN = os.getenv("BOT_TOKEN")
+CHAT_ID = os.getenv("CHAT_ID")
 
 @app.route("/")
 def home():
