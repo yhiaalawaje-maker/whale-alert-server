@@ -14,18 +14,40 @@ def home():
 
 @app.route("/webhook", methods=["POST"])
 def webhook():
-
     raw_data = request.data.decode("utf-8")
 
-    try:
-        data = json.loads(raw_data)
-    except:
-        data = {"message": raw_data}
+    if not raw_data:
+        raw_data = "تنبيه جديد من TradingView"
 
-    signal = data.get("signal", "ALERT")
-    symbol = data.get("symbol", "SPX")
-    price = data.get("price", "")
-    time = data.get("time", "")
+    telegram_url = f"https://api.telegram.org/bot{BOT_TOKEN}/sendMessage"
+
+    payload = {
+        "chat_id": CHAT_ID,
+        "text": raw_data
+    }
+
+    try:
+        r = requests.post(telegram_url, json=payload, timeout=10)
+        print("Telegram status:", r.status_code)
+        print(r.text)
+        return "OK", 200
+
+    except Exception as e:
+        print("Telegram error:", str(e))
+        return "ERROR", 500
+
+
+    
+
+    
+    
+    
+        
+
+    
+    
+    
+    
 
     message = f"""
 🚨 تنبيه جديد
